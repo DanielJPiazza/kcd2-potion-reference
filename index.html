@@ -38,17 +38,20 @@
   *{box-sizing:border-box;}
   body{
     margin:0; font-family:Georgia, 'Times New Roman', serif;
-    background:var(--bg); color:var(--text); padding:24px 16px 80px;
+    background:var(--bg); color:var(--text); padding:16px 24px 60px;
     transition: background-color 0.3s ease, color 0.3s ease;
   }
   
+  /* Responsive Non-Overlapping Header */
   .header-row {
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
-    max-width: 900px;
-    margin: 0 auto 4px;
+    max-width: 1350px;
+    margin: 0 auto 8px;
+    gap: 12px;
+    flex-wrap: wrap;
   }
   h1{
     text-align:center; font-size:28px; letter-spacing:1.5px; margin:0;
@@ -75,8 +78,23 @@
     color: var(--accent);
   }
 
+  /* Mobile Adjustments for Header */
+  @media (max-width: 600px) {
+    .header-row {
+      flex-direction: column;
+      align-items: center;
+    }
+    .theme-toggle {
+      position: static;
+      margin-top: 4px;
+    }
+    body {
+      padding: 16px 16px 40px;
+    }
+  }
+
   .sub{ text-align:center; color:var(--muted); font-size:14px; margin-bottom:20px; font-style:italic; }
-  .wrap{ max-width:900px; margin:0 auto; }
+  .wrap{ max-width:1350px; margin:0 auto; }
 
   /* Toolbar */
   .toolbar{
@@ -96,7 +114,7 @@
   .btn:hover{ background:var(--border); color:var(--accent); border-color:var(--border-bright); }
   .search-input{
     background:var(--panel2); border:1px solid var(--border); color:var(--text);
-    padding:6px 10px; border-radius:4px; font-family:inherit; font-size:13px; flex-grow:1; max-width:240px;
+    padding:6px 10px; border-radius:4px; font-family:inherit; font-size:13px; flex-grow:1; max-width:280px;
   }
   .search-input:focus{ outline:none; border-color:var(--accent); }
 
@@ -109,8 +127,8 @@
   .shopping h2{ margin:0 0 10px; font-size:19px; color:var(--accent); font-variant:small-caps; display:flex; justify-content:space-between; align-items:center;}
   .shopping-empty{ color:var(--muted); font-size:14px; font-style:italic; }
   .shop-grid{
-    display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
-    gap:8px 16px; font-size:15px;
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+    gap:8px 20px; font-size:15px;
   }
   .shop-item{
     display:flex; justify-content:space-between; border-bottom:1px dotted var(--border);
@@ -119,12 +137,11 @@
   .shop-item:hover{ color:var(--accent); }
   .shop-item.checked{ text-decoration:line-through; opacity:0.35; color:var(--muted); }
   .shop-item b{ color:var(--accent2); }
-  .base-list{ margin-top:12px; font-size:13px; color:var(--muted); border-top:1px dashed var(--border); padding-top:8px; }
 
   /* Grid & Cards */
   .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 16px;
   }
   .card {
@@ -204,7 +221,7 @@
     <h1>Henry's Alchemy Restock</h1>
     <button class="theme-toggle" id="themeToggleBtn">☀️ Light</button>
   </div>
-  <div class="sub">Set how many of each potion you want to brew — the shopping list below updates automatically.</div>
+  <div class="sub">An alchemy ingredient calculator and restock planning tool for <strong>Kingdom Come: Deliverance II</strong>. Set desired brew amounts to instantly generate your total herb shopping list.</div>
 
   <div class="shopping" id="shopping">
     <h2>
@@ -495,12 +512,10 @@ grid.addEventListener('click', e => {
 // Shopping List Logic
 function updateShoppingList(){
   const totals = {};
-  const baseTotals = {};
   
   potions.forEach(p => {
     const count = state[p.name] || 0;
     if (count <= 0) return;
-    baseTotals[p.base] = (baseTotals[p.base] || 0) + count;
     p.ingredients.forEach(ing => {
       totals[ing.name] = (totals[ing.name] || 0) + ing.qty * count;
     });
@@ -521,12 +536,6 @@ function updateShoppingList(){
   });
   html += '</div>';
 
-  const baseNames = Object.keys(baseTotals).sort();
-  if (baseNames.length){
-    html += '<div class="base-list">Base liquids needed: ' +
-      baseNames.map(b => `${baseTotals[b]} ${b.replace(/^1 /, '')}${baseTotals[b] !== 1 ? 's' : ''} worth (1 per brew)`).join(', ') +
-      '</div>';
-  }
   shopContent.innerHTML = html;
 
   // Re-attach checklist click events
