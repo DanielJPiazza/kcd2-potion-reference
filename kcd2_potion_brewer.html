@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>KCD2 Potion Restock</title>
+<style>
+  :root{
+    --bg:#181410; --panel:#221c16; --panel2:#2b241c; --border:#4a3f30;
+    --text:#e9dfc9; --muted:#a89a7c; --accent:#c99a3c; --accent2:#7fae6b;
+    --danger:#b5533f;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:Georgia, 'Times New Roman', serif;
+    background:var(--bg); color:var(--text); padding:24px 16px 80px;
+  }
+  h1{
+    text-align:center; font-size:26px; letter-spacing:1px; margin:0 0 4px;
+    color:var(--accent); font-variant:small-caps;
+  }
+  .sub{ text-align:center; color:var(--muted); font-size:14px; margin-bottom:24px; }
+  .wrap{ max-width:900px; margin:0 auto; }
+
+  .shopping{
+    background:var(--panel); border:1px solid var(--border); border-radius:6px;
+    padding:16px 20px; margin-bottom:28px;
+  }
+  .shopping h2{ margin:0 0 10px; font-size:18px; color:var(--accent); font-variant:small-caps; }
+  .shopping-empty{ color:var(--muted); font-size:14px; font-style:italic; }
+  .shop-grid{
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+    gap:8px 16px; font-size:15px;
+  }
+  .shop-item{ display:flex; justify-content:space-between; border-bottom:1px dotted var(--border); padding:3px 0; }
+  .shop-item b{ color:var(--accent2); }
+  .base-list{ margin-top:10px; font-size:13px; color:var(--muted); }
+
+  .grid{
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+    gap:16px;
+  }
+  .card{
+    background:var(--panel); border:1px solid var(--border); border-radius:6px;
+    padding:14px 16px; display:flex; flex-direction:column; gap:8px;
+  }
+  .card-head{ display:flex; justify-content:space-between; align-items:baseline; }
+  .card-head h3{ margin:0; font-size:17px; color:var(--accent); }
+  .base{ font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; }
+  .qty-row{ display:flex; align-items:center; gap:8px; font-size:13px; color:var(--muted); }
+  .qty-row input{
+    width:48px; background:var(--panel2); border:1px solid var(--border); color:var(--text);
+    border-radius:4px; padding:2px 4px; font-family:inherit; text-align:center;
+  }
+  .effect{ font-size:13px; color:var(--muted); font-style:italic; margin:0; }
+  .ing-list{ margin:0; padding-left:18px; font-size:14px; }
+  .ing-list li::marker{ color:var(--accent2); }
+  .toggle{
+    background:none; border:1px solid var(--border); color:var(--accent);
+    border-radius:4px; padding:5px 8px; font-size:12px; cursor:pointer;
+    align-self:flex-start; font-family:inherit;
+  }
+  .toggle:hover{ background:var(--panel2); }
+  .steps{ display:none; margin:4px 0 0; padding-left:18px; font-size:13.5px; color:var(--text); }
+  .steps.open{ display:block; }
+  .steps li{ margin-bottom:4px; }
+  .quality-note{ font-size:11.5px; color:var(--muted); border-top:1px dashed var(--border); padding-top:6px; margin-top:2px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Henry's Alchemy Restock</h1>
+  <div class="sub">Set how many of each potion you want to brew — the shopping list below updates automatically.</div>
+
+  <div class="shopping" id="shopping">
+    <h2>Shopping list</h2>
+    <div id="shopContent"></div>
+  </div>
+
+  <div class="grid" id="potionGrid"></div>
+</div>
+
+<script>
+const potions = [
+  {
+    name: "Fox",
+    base: "1 Oil",
+    effect: "Improves speech and speeds up reading (good quality). Boosts XP gain at best quality.",
+    ingredients: [
+      {name:"Nettle", qty:1},
+      {name:"St. John's wort", qty:1},
+      {name:"Belladonna", qty:1},
+      {name:"Charcoal", qty:1}
+    ],
+    steps: [
+      "Grind the St. John's wort and the nettle.",
+      "Add both to the cauldron and boil for 2 turns.",
+      "Grind the charcoal and add it to the cauldron.",
+      "Add the belladonna and boil for 1 turn.",
+      "Finally, pour."
+    ]
+  },
+  {
+    name: "Aqua Vitalis",
+    base: "1 Water",
+    effect: "Reduces loss of health and slows bleeding.",
+    ingredients: [
+      {name:"Dandelion", qty:2},
+      {name:"Marigold", qty:1}
+    ],
+    steps: [
+      "Add the dandelion to the cauldron and boil for 1 turn.",
+      "Grind the marigold and add it to the cauldron.",
+      "Boil for 2 turns.",
+      "Finally, distil."
+    ]
+  },
+  {
+    name: "Artemisia",
+    base: "1 Spiritus",
+    effect: "Increases Strength for 10 minutes.",
+    ingredients: [
+      {name:"Wormwood", qty:2},
+      {name:"Sage", qty:1}
+    ],
+    steps: [
+      "Add the sage to the cauldron and boil for 1 turn.",
+      "Grind the wormwood and add it to the cauldron.",
+      "Boil for 2 turns.",
+      "Finally, distil."
+    ]
+  },
+  {
+    name: "Marigold Decoction",
+    base: "1 Water",
+    effect: "Gradually heals part of your health. Helps against hangover, cures it outright at good quality.",
+    ingredients: [
+      {name:"Nettle", qty:1},
+      {name:"Marigold", qty:2}
+    ],
+    steps: [
+      "Add the nettle to the cauldron and boil for 2 turns.",
+      "Grind the marigold and add it to the cauldron.",
+      "Finally, pour."
+    ]
+  },
+  {
+    name: "Quickfinger",
+    base: "1 Water",
+    effect: "Increases thievery and craftsmanship skills.",
+    ingredients: [
+      {name:"Eyebright", qty:2},
+      {name:"Valerian", qty:2},
+      {name:"Cobweb", qty:1}
+    ],
+    steps: [
+      "Add the cobweb and the eyebright to the cauldron and boil for 3 turns.",
+      "Grind the valerian and add it to the cauldron.",
+      "Boil for 1 turn.",
+      "Finally, pour."
+    ]
+  },
+  {
+    name: "Saviour Schnapps",
+    base: "1 Wine",
+    effect: "Manually saves the game. Good quality also boosts strength, vitality and agility.",
+    ingredients: [
+      {name:"Nettle", qty:1},
+      {name:"Belladonna", qty:2}
+    ],
+    steps: [
+      "Add the nettle to the cauldron and boil for 2 turns.",
+      "Grind the belladonna.",
+      "Add the belladonna to the cauldron and boil for 1 turn.",
+      "Finally, pour."
+    ]
+  },
+  {
+    name: "Buck's Blood",
+    base: "1 Oil",
+    effect: "Increases stamina, and stamina regeneration at good quality.",
+    ingredients: [
+      {name:"St. John's wort", qty:1},
+      {name:"Dandelion", qty:1},
+      {name:"Comfrey", qty:1}
+    ],
+    steps: [
+      "Grind the St. John's wort and add it to the cauldron.",
+      "Add the comfrey to the cauldron and boil for 1 turn.",
+      "Add the dandelion and, using the bellows, boil for 1 turn.",
+      "Finally, pour."
+    ]
+  },
+  {
+    name: "Bane (poison)",
+    base: "1 Wine",
+    effect: "Deadly poison — reduces health by 110. Better suited to poisoning cooking pots than weapons.",
+    ingredients: [
+      {name:"Wormwood", qty:1},
+      {name:"Belladonna", qty:2},
+      {name:"Amanita muscaria (fly agaric)", qty:1}
+    ],
+    steps: [
+      "Add the wormwood to the cauldron and boil for 2 turns.",
+      "Grind the belladonna and add it to the cauldron.",
+      "Boil for 1 turn using the bellows.",
+      "Add the fly agaric to the cauldron.",
+      "Finally, distil."
+    ]
+  },
+  {
+    name: "Painkiller",
+    base: "1 Spiritus",
+    effect: "Lessens the effect of wounds and reduces stamina loss tied to low health.",
+    ingredients: [
+      {name:"Poppy", qty:3},
+      {name:"Comfrey", qty:1},
+      {name:"Marigold", qty:1}
+    ],
+    steps: [
+      "Grind the poppy and add it to the cauldron.",
+      "Add the marigold and, using the bellows, boil for 1 turn.",
+      "Add the comfrey and boil for 2 turns.",
+      "Finally, distil."
+    ]
+  },
+  {
+    name: "Hair o' the Dog",
+    base: "1 Water",
+    effect: "Reduces drunkenness — full sobriety at good quality, also helps hangovers.",
+    ingredients: [
+      {name:"Sage", qty:1},
+      {name:"St. John's wort", qty:1},
+      {name:"Mint", qty:1}
+    ],
+    steps: [
+      "Add the sage and St. John's wort to the cauldron.",
+      "Boil for 3 turns.",
+      "Grind the mint and add it to the cauldron.",
+      "Finally, pour."
+    ]
+  }
+];
+
+const grid = document.getElementById('potionGrid');
+const state = {};
+
+potions.forEach((p, i) => {
+  state[p.name] = 1;
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.innerHTML = `
+    <div class="card-head">
+      <h3>${p.name}</h3>
+      <span class="base">${p.base}</span>
+    </div>
+    <p class="effect">${p.effect}</p>
+    <div class="qty-row">
+      Brews wanted:
+      <input type="number" min="0" max="20" step="1" value="1" data-name="${p.name}" class="qtyInput">
+    </div>
+    <ul class="ing-list">
+      ${p.ingredients.map(ing => `<li data-ing="${ing.name}">${ing.qty} &times; ${ing.name}</li>`).join('')}
+    </ul>
+    <button class="toggle" data-idx="${i}">Show brewing steps</button>
+    <ol class="steps" id="steps-${i}">
+      ${p.steps.map(s => `<li>${s}</li>`).join('')}
+    </ol>
+    <div class="quality-note">Quality depends on ingredient freshness and following each step precisely (right boil turns, grinding, bellows use). Mistakes lower quality; wrong ingredients fail the brew entirely.</div>
+  `;
+  grid.appendChild(card);
+});
+
+grid.querySelectorAll('.toggle').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const steps = document.getElementById('steps-' + btn.dataset.idx);
+    const open = steps.classList.toggle('open');
+    btn.textContent = open ? 'Hide brewing steps' : 'Show brewing steps';
+  });
+});
+
+function round(n){ return Math.round(n); }
+
+function updateShoppingList(){
+  const totals = {};
+  const baseTotals = {};
+  potions.forEach(p => {
+    const count = state[p.name] || 0;
+    if (count <= 0) return;
+    baseTotals[p.base] = (baseTotals[p.base] || 0) + count;
+    p.ingredients.forEach(ing => {
+      totals[ing.name] = (totals[ing.name] || 0) + ing.qty * count;
+    });
+  });
+
+  const shopContent = document.getElementById('shopContent');
+  const names = Object.keys(totals).sort();
+  if (names.length === 0){
+    shopContent.innerHTML = '<div class="shopping-empty">Set brew counts above zero to build your list.</div>';
+    return;
+  }
+  let html = '<div class="shop-grid">';
+  names.forEach(n => {
+    html += `<div class="shop-item"><span>${n}</span><b>${round(totals[n])}</b></div>`;
+  });
+  html += '</div>';
+
+  const baseNames = Object.keys(baseTotals).sort();
+  if (baseNames.length){
+    html += '<div class="base-list">Base liquids needed: ' +
+      baseNames.map(b => `${round(baseTotals[b])} ${b.replace(/^1 /, '')}${round(baseTotals[b]) !== 1 ? 's' : ''} worth (1 per brew)`).join(', ') +
+      '</div>';
+  }
+  shopContent.innerHTML = html;
+}
+
+grid.querySelectorAll('.qtyInput').forEach(inp => {
+  inp.addEventListener('input', () => {
+    let v = parseInt(inp.value, 10);
+    if (isNaN(v) || v < 0) v = 0;
+    state[inp.dataset.name] = v;
+    updateShoppingList();
+  });
+});
+
+updateShoppingList();
+</script>
+</body>
+</html>
