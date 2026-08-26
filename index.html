@@ -3,65 +3,119 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Henry's Alchemy Restock - KCD2</title>
+<title>Henry's Alchemy Restock</title>
 <style>
-  /* Base Variables - "Apothecary Ledger" Dark Mode */
+  /* Base Variables - Dark Mode */
   :root {
-    --bg: #1C1917;             /* Charcoal Walnut */
-    --panel: #292524;          /* Deep Leather / Wood Panel */
-    --panel2: #211E1C;         /* Inset Shadow Bark */
-    --border: #44403C;          /* Aged Timber Border */
-    --border-bright: #D97706;   /* Warm Amber Gold Highlight */
-    --text: #F5F5F4;            /* Off-White Parchment Text */
-    --muted: #A8A29E;           /* Weathered Slate Grey */
-    --accent: #F59E0B;          /* Warm Honey Amber */
-    --accent2: #D97706;         /* Ochre Gold */
-    --crimson: #DC2626;         /* Bohemian Red */
-    --shadow: rgba(0, 0, 0, 0.6);
+    --bg: #1A120B;
+    --panel: #2C221E;
+    --panel2: #211915;
+    --border: #5C3D2E;
+    --border-bright: #F59E0B;
+    --text: #F5F5F4;
+    --muted: #A8A29E;
+    --accent: #F59E0B;
+    --accent2: #D97706;
+    --crimson: #DC2626;
+    --shadow: rgba(0, 0, 0, 0.8);
   }
 
-  /* "Bohemian Parchment" Light Mode */
+  /* Light Mode */
   [data-theme="light"] {
-    --bg: #F5F5F4;             /* Warm Sunlit Vellum */
-    --panel: #FFFFFF;          /* Pure Parchment */
-    --panel2: #E7E5E4;         /* Soft Tan Inset */
-    --border: #78350F;          /* Burnished Leather Border */
-    --border-bright: #B45309;   /* Warm Amber Highlight */
-    --text: #1C1917;            /* Dark Iron Ink */
-    --muted: #57534E;           /* Aged Ink Grey */
-    --accent: #B45309;          /* Deep Amber Gold */
-    --accent2: #78350F;         /* Rich Mahogany */
-    --crimson: #991B1B;         /* Bohemian Red */
-    --shadow: rgba(28, 25, 23, 0.08);
+    --bg: #FDFBF7;
+    --panel: #FFF;
+    --panel2: #E7E5E4;
+    --border: #78350F;
+    --border-bright: #B45309;
+    --text: #1C1917;
+    --muted: #57534E;
+    --accent: #B45309;
+    --accent2: #78350F;
+    --crimson: #991B1B;
+    --shadow: rgba(28, 25, 23, 0.12);
   }
 
   *{box-sizing:border-box;}
   body{
-    margin:0; font-family:Georgia, 'Times New Roman', serif;
+    margin:0; font-family: Georgia, "Impact", serif;
     background:var(--bg); color:var(--text); padding:16px 24px 60px;
     transition: background-color 0.3s ease, color 0.3s ease;
   }
+
+  .wrap{ max-width:1350px; margin:0 auto; position: relative; }
+
+  /* Top Control Bar positioned absolutely on wide screens */
+  .top-bar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 10;
+  }
   
-  /* Responsive Non-Overlapping Header */
   .header-row {
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
-    max-width: 1350px;
-    margin: 0 auto 8px;
-    gap: 12px;
-    flex-wrap: wrap;
+    max-width: 900px;
+    margin: 0 auto 12px;
+    gap: 24px;
   }
+
+  .header-title-container {
+    text-align: center;
+    flex: 0 1 auto;
+  }
+
+  .character-portrait-wrapper {
+    position: relative;
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    border: 3px solid var(--border-bright);
+    background: #3B261A;
+    box-shadow: 0 0 12px var(--accent);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .character-portrait-wrapper:hover {
+    transform: scale(1.15) rotate(4deg);
+    box-shadow: 0 0 20px #FFD700;
+  }
+  .character-portrait-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  
+  /* Fine-tuned facial alignments */
+  .portrait-henry { object-position: 50% 15%; }
+  .portrait-capon { object-position: 50% 10%; }
+
   h1{
-    text-align:center; font-size:28px; letter-spacing:1.5px; margin:0;
-    color:var(--accent); font-variant:small-caps; text-shadow:0 2px 8px var(--shadow);
+    text-align:center; font-size:32px; letter-spacing:1.5px; margin:0;
+    color:var(--accent); font-variant:small-caps; text-shadow:2px 2px 0px #000, 0 0 12px var(--accent);
   }
+  .motto {
+    display: block;
+    text-align: center;
+    font-size: 15px;
+    color: var(--crimson);
+    letter-spacing: 2.5px;
+    font-weight: bold;
+    font-style: italic;
+    margin-top: 4px;
+    text-shadow: 0 0 5px rgba(220, 38, 38, 0.4);
+  }
+
   .theme-toggle {
-    position: absolute;
-    right: 0;
     background: var(--panel);
-    border: 1px solid var(--border);
+    border: 2px solid var(--border-bright);
     color: var(--text);
     border-radius: 4px;
     padding: 6px 12px;
@@ -72,59 +126,58 @@
     text-transform: uppercase;
     letter-spacing: 0.5px;
     transition: all 0.2s ease;
+    box-shadow: 0 2px 6px var(--shadow);
   }
   .theme-toggle:hover {
-    border-color: var(--border-bright);
-    color: var(--accent);
+    background: var(--border-bright);
+    color: #000;
+    transform: scale(1.05);
   }
 
-  /* Mobile Adjustments for Header */
-  @media (max-width: 600px) {
-    .header-row {
-      flex-direction: column;
-      align-items: center;
-    }
-    .theme-toggle {
+  /* Increased breakpoint to 1100px so button drops above the header early */
+  @media (max-width: 1100px) {
+    .top-bar {
       position: static;
-      margin-top: 4px;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 16px;
     }
-    body {
-      padding: 16px 16px 40px;
-    }
+  }
+
+  @media (max-width: 650px) {
+    .header-row { flex-direction: column; align-items: center; gap: 12px; }
+    h1 { font-size: 26px; }
+    .motto { font-size: 13px; }
+    body { padding: 12px 12px 40px; }
   }
 
   .sub{ text-align:center; color:var(--muted); font-size:14px; margin-bottom:20px; font-style:italic; }
-  .wrap{ max-width:1350px; margin:0 auto; }
 
-  /* Toolbar */
   .toolbar{
     display:flex; flex-wrap:wrap; gap:8px; justify-content:space-between;
     align-items:center; margin-bottom:16px; background:var(--panel);
     padding:10px 14px; border:1px solid var(--border); border-radius:6px;
     box-shadow: 0 4px 12px var(--shadow);
-    transition: background-color 0.3s ease, border-color 0.3s ease;
   }
-  .btn-group{ display:flex; gap:6px; flex-wrap:wrap; }
+  .btn-group{ display:flex; gap:8px; flex-wrap:wrap; }
   .btn{
     background:var(--panel2); border:1px solid var(--border); color:var(--text);
-    border-radius:4px; padding:6px 12px; font-size:12px; cursor:pointer;
+    border-radius:4px; padding:8px 14px; font-size:12px; cursor:pointer;
     font-family:inherit; transition:all 0.2s; text-transform:uppercase; letter-spacing:0.5px;
     font-weight:bold;
   }
-  .btn:hover{ background:var(--border); color:var(--accent); border-color:var(--border-bright); }
+  .btn:hover{ background:var(--border-bright); color:#000; border-color:var(--accent); transform: translateY(-2px); }
   .search-input{
     background:var(--panel2); border:1px solid var(--border); color:var(--text);
-    padding:6px 10px; border-radius:4px; font-family:inherit; font-size:13px; flex-grow:1; max-width:280px;
+    padding:8px 12px; border-radius:4px; font-family:inherit; font-size:13px; flex-grow:1; max-width:300px;
   }
-  .search-input:focus{ outline:none; border-color:var(--accent); }
+  .search-input:focus{ outline:none; border-color:var(--accent); box-shadow: 0 0 8px var(--accent); }
 
-  /* Shopping Section */
   .shopping{
-    background:var(--panel); border:1px solid var(--border); border-radius:6px;
+    background:var(--panel); border:2px solid var(--border); border-radius:6px;
     padding:16px 20px; margin-bottom:24px; box-shadow:0 4px 14px var(--shadow);
-    transition: background-color 0.3s ease, border-color 0.3s ease;
   }
-  .shopping h2{ margin:0 0 10px; font-size:19px; color:var(--accent); font-variant:small-caps; display:flex; justify-content:space-between; align-items:center;}
+  .shopping h2{ margin:0 0 10px; font-size:20px; color:var(--accent); font-variant:small-caps; display:flex; justify-content:space-between; align-items:center;}
   .shopping-empty{ color:var(--muted); font-size:14px; font-style:italic; }
   .shop-grid{
     display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
@@ -138,7 +191,6 @@
   .shop-item.checked{ text-decoration:line-through; opacity:0.35; color:var(--muted); }
   .shop-item b{ color:var(--accent2); }
 
-  /* Grid & Cards */
   .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -154,7 +206,7 @@
     box-shadow: 0 4px 10px var(--shadow);
     transition: border-color 0.2s, transform 0.1s, background-color 0.3s ease;
   }
-  .card:hover { border-color: var(--border-bright); }
+  .card:hover { border-color: var(--border-bright); transform: translateY(-2px); }
   
   .card-head { 
     display: flex; 
@@ -166,14 +218,9 @@
   .card-head h3 { margin: 0; font-size: 18px; color: var(--accent); font-variant: small-caps; }
   .base { font-size: 11px; color: var(--crimson); font-weight: bold; text-transform: uppercase; letter-spacing: 0.8px; }
 
-  /* Fixed height block locks vertical alignment across cards */
-  .desc-box {
-    height: 52px;
-    margin-bottom: 12px;
-  }
+  .desc-box { height: 52px; margin-bottom: 12px; }
   .effect { font-size: 13px; color: var(--muted); font-style: italic; margin: 0; line-height: 1.3; }
 
-  /* Horizontal Alignment for Brews Wanted Row */
   .qty-row { 
     display: flex; 
     flex-direction: row; 
@@ -194,10 +241,10 @@
     overflow: hidden; 
     background: var(--panel2); 
   }
-  .qty-btn { background: none; border: none; color: var(--text); padding: 3px 10px; cursor: pointer; font-weight: bold; }
-  .qty-btn:hover { background: var(--border); color: var(--accent); }
+  .qty-btn { background: none; border: none; color: var(--text); padding: 4px 12px; cursor: pointer; font-weight: bold; font-size: 14px;}
+  .qty-btn:hover { background: var(--border-bright); color: #000; }
   .qty-row input {
-    width: 36px; background: none; border: none; color: var(--text);
+    width: 38px; background: none; border: none; color: var(--text);
     padding: 2px 0; font-family: inherit; text-align: center; -moz-appearance: textfield; font-weight: bold;
   }
   .qty-row input::-webkit-outer-spin-button, .qty-row input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
@@ -216,16 +263,34 @@
 </style>
 </head>
 <body>
+
 <div class="wrap">
-  <div class="header-row">
-    <h1>Henry's Alchemy Restock</h1>
-    <button class="theme-toggle" id="themeToggleBtn">☀️ Light</button>
+  <div class="top-bar">
+    <button class="theme-toggle" id="themeToggleBtn">☀️ Light Mode</button>
   </div>
-  <div class="sub">An alchemy ingredient calculator and restock planning tool for <strong>Kingdom Come: Deliverance II</strong>. Set desired brew amounts to instantly generate your total herb shopping list.</div>
+
+  <div class="header-row">
+    <!-- Image Portrait: Henry -->
+    <div class="character-portrait-wrapper" title="Henry's come to see us!">
+      <img src="images/henry.jpg" alt="Henry" class="portrait-henry">
+    </div>
+
+    <div class="header-title-container">
+      <h1>Henry's Alchemy Restock</h1>
+      <span class="motto">⚔️ AUDENTES FORTUNA IUVAT ⚔️</span>
+    </div>
+
+    <!-- Image Portrait: Hans Capon -->
+    <div class="character-portrait-wrapper" title="Lord Hans Capon of Leipa">
+      <img src="images/capon.jpg" alt="Capon" class="portrait-capon">
+    </div>
+  </div>
+
+  <div class="sub">"Jesus Christ be praised! Stock up on herbs before Lord Capon gets us ambushed by Cumans again."</div>
 
   <div class="shopping" id="shopping">
     <h2>
-      <span>Shopping list</span>
+      <span>🌾 Herbalist Shopping List</span>
       <button class="btn" id="copyBtn" title="Copy to clipboard">Copy List</button>
     </h2>
     <div id="shopContent"></div>
@@ -233,7 +298,7 @@
 
   <div class="toolbar">
     <div class="btn-group">
-      <button class="btn" id="resetBtn">Reset All to 0</button>
+      <button class="btn" id="resetBtn">Clear All</button>
       <button class="btn" id="setOneBtn">Set All to 1</button>
     </div>
     <input type="text" id="searchInput" class="search-input" placeholder="Search potions or herbs...">
@@ -245,9 +310,9 @@
 <script>
 const potions = [
   {
-    name: "Fox",
+    name: "Fox Potion",
     base: "1 Oil",
-    effect: "Improves speech and speeds up reading (good quality). Boosts XP gain at best quality.",
+    effect: "Improves speech and reading for negotiating or studying alchemy tomes.",
     ingredients: [
       {name:"Nettle", qty:1},
       {name:"St. John's wort", qty:1},
@@ -256,23 +321,23 @@ const potions = [
     ],
     steps: [
       "Grind the St. John's wort and the nettle.",
-      "Add both to the cauldron and boil for 2 turns.",
-      "Grind the charcoal and add it to the cauldron.",
-      "Add the belladonna and boil for 1 turn.",
-      "Finally, pour."
+      "Add both to cauldron and boil for 2 turns.",
+      "Grind charcoal and throw it in.",
+      "Add belladonna and boil for 1 turn.",
+      "Pour into bottle."
     ]
   },
   {
     name: "Aqua Vitalis",
     base: "1 Water",
-    effect: "Reduces loss of health and slows bleeding.",
+    effect: "Reduces damage taken so Henry doesn't get one-shot by a peasant with a club.",
     ingredients: [
       {name:"Dandelion", qty:2},
       {name:"Marigold", qty:1}
     ],
     steps: [
-      "Add the dandelion to the cauldron and boil for 1 turn.",
-      "Grind the marigold and add it to the cauldron.",
+      "Add dandelion to cauldron and boil for 1 turn.",
+      "Grind marigold and add to cauldron.",
       "Boil for 2 turns.",
       "Finally, distil."
     ]
@@ -280,14 +345,14 @@ const potions = [
   {
     name: "Artemisia",
     base: "1 Spiritus",
-    effect: "Increases Strength for 10 minutes.",
+    effect: "Increases Strength so you can carry 600 lbs of stolen Cuman armor back to Miller Peshek.",
     ingredients: [
       {name:"Wormwood", qty:2},
       {name:"Sage", qty:1}
     ],
     steps: [
-      "Add the sage to the cauldron and boil for 1 turn.",
-      "Grind the wormwood and add it to the cauldron.",
+      "Add sage to cauldron and boil for 1 turn.",
+      "Grind wormwood and add to cauldron.",
       "Boil for 2 turns.",
       "Finally, distil."
     ]
@@ -295,111 +360,110 @@ const potions = [
   {
     name: "Marigold Decoction",
     base: "1 Water",
-    effect: "Gradually heals part of your health. Helps against hangover, cures it outright at good quality.",
+    effect: "Liquid chug-healing. Instantly fixes hangover after a wild night out with Father Godwin.",
     ingredients: [
       {name:"Nettle", qty:1},
       {name:"Marigold", qty:2}
     ],
     steps: [
-      "Add the nettle to the cauldron and boil for 2 turns.",
-      "Grind the marigold and add it to the cauldron.",
-      "Finally, pour."
+      "Add nettle to cauldron and boil for 2 turns.",
+      "Grind marigold and add to cauldron.",
+      "Pour directly down Henry's throat."
     ]
   },
   {
     name: "Quickfinger",
     base: "1 Water",
-    effect: "Increases thievery and craftsmanship skills.",
+    effect: "Improves lockpicking so you can pick locks with ease.",
     ingredients: [
       {name:"Eyebright", qty:2},
       {name:"Valerian", qty:2},
       {name:"Cobweb", qty:1}
     ],
     steps: [
-      "Add the cobweb and the eyebright to the cauldron and boil for 3 turns.",
-      "Grind the valerian and add it to the cauldron.",
-      "Boil for 1 turn.",
-      "Finally, pour."
+      "Add cobweb and eyebright to cauldron; boil for 3 turns.",
+      "Grind valerian and add to cauldron.",
+      "Boil for 1 turn, then pour."
     ]
   },
   {
     name: "Saviour Schnapps",
     base: "1 Wine",
-    effect: "Manually saves the game. Good quality also boosts strength, vitality and agility.",
+    effect: "Saves your game! Warning: Drink too many and Henry wakes up naked in a ditch near Talmberg.",
     ingredients: [
       {name:"Nettle", qty:1},
       {name:"Belladonna", qty:2}
     ],
     steps: [
-      "Add the nettle to the cauldron and boil for 2 turns.",
-      "Grind the belladonna.",
-      "Add the belladonna to the cauldron and boil for 1 turn.",
-      "Finally, pour."
+      "Add nettle to cauldron and boil for 2 turns.",
+      "Grind belladonna.",
+      "Add belladonna to cauldron and boil for 1 turn.",
+      "Pour into flask and save your life!"
     ]
   },
   {
     name: "Buck's Blood",
     base: "1 Oil",
-    effect: "Increases stamina, and stamina regeneration at good quality.",
+    effect: "Infinite stamina mode for sprinting away when 4 heavily armored bandits jump you.",
     ingredients: [
       {name:"St. John's wort", qty:1},
       {name:"Dandelion", qty:1},
       {name:"Comfrey", qty:1}
     ],
     steps: [
-      "Grind the St. John's wort and add it to the cauldron.",
-      "Add the comfrey to the cauldron and boil for 1 turn.",
-      "Add the dandelion and, using the bellows, boil for 1 turn.",
-      "Finally, pour."
+      "Grind St. John's wort and add to cauldron.",
+      "Add comfrey to cauldron and boil for 1 turn.",
+      "Add dandelion and pump bellows for 1 turn.",
+      "Pour into bottle."
     ]
   },
   {
-    name: "Bane (poison)",
+    name: "Bane Poison",
     base: "1 Wine",
-    effect: "Deadly poison — reduces health by 110. Better suited to poisoning cooking pots than weapons.",
+    effect: "Lethal poison. Slip it into the bandit camp stew pot while nobody is looking.",
     ingredients: [
       {name:"Wormwood", qty:1},
       {name:"Belladonna", qty:2},
-      {name:"Amanita muscaria (fly agaric)", qty:1}
+      {name:"Amanita muscaria", qty:1}
     ],
     steps: [
-      "Add the wormwood to the cauldron and boil for 2 turns.",
-      "Grind the belladonna and add it to the cauldron.",
-      "Boil for 1 turn using the bellows.",
-      "Add the fly agaric to the cauldron.",
-      "Finally, distil."
+      "Add wormwood to cauldron and boil for 2 turns.",
+      "Grind belladonna and add to cauldron.",
+      "Boil for 1 turn using bellows.",
+      "Add fly agaric mushroom.",
+      "Distil with extreme caution!"
     ]
   },
   {
     name: "Painkiller",
     base: "1 Spiritus",
-    effect: "Lessens the effect of wounds and reduces stamina loss tied to low health.",
+    effect: "Numbs pain when Captain Bernard breaks your ribs during combat practice.",
     ingredients: [
       {name:"Poppy", qty:3},
       {name:"Comfrey", qty:1},
       {name:"Marigold", qty:1}
     ],
     steps: [
-      "Grind the poppy and add it to the cauldron.",
-      "Add the marigold and, using the bellows, boil for 1 turn.",
-      "Add the comfrey and boil for 2 turns.",
-      "Finally, distil."
+      "Grind poppy and add to cauldron.",
+      "Add marigold and pump bellows for 1 turn.",
+      "Add comfrey and boil for 2 turns.",
+      "Distil."
     ]
   },
   {
     name: "Hair o' the Dog",
     base: "1 Water",
-    effect: "Reduces drunkenness — full sobriety at good quality, also helps hangovers.",
+    effect: "Cures drunkenness when Capon challenges you to a bathhouse drinking contest.",
     ingredients: [
       {name:"Sage", qty:1},
       {name:"St. John's wort", qty:1},
       {name:"Mint", qty:1}
     ],
     steps: [
-      "Add the sage and St. John's wort to the cauldron.",
+      "Add sage and St. John's wort to cauldron.",
       "Boil for 3 turns.",
-      "Grind the mint and add it to the cauldron.",
-      "Finally, pour."
+      "Grind mint and throw it in.",
+      "Pour and drink immediately."
     ]
   }
 ];
@@ -409,17 +473,16 @@ const savedState = JSON.parse(localStorage.getItem('kcd2_potion_state') || '{}')
 const state = {};
 const checkedItems = new Set();
 
-// Theme Toggle Logic
 const themeToggleBtn = document.getElementById('themeToggleBtn');
 const savedTheme = localStorage.getItem('kcd2_theme') || 'dark';
 
 function applyTheme(theme) {
   if (theme === 'light') {
     document.documentElement.setAttribute('data-theme', 'light');
-    themeToggleBtn.textContent = '🌙 Dark';
+    themeToggleBtn.textContent = '🌙 Dark Mode';
   } else {
     document.documentElement.removeAttribute('data-theme');
-    themeToggleBtn.textContent = '☀️ Light';
+    themeToggleBtn.textContent = '☀️ Light Mode';
   }
   localStorage.setItem('kcd2_theme', theme);
 }
@@ -431,7 +494,6 @@ themeToggleBtn.addEventListener('click', () => {
 
 applyTheme(savedTheme);
 
-// Render Cards
 potions.forEach((p, i) => {
   state[p.name] = savedState[p.name] !== undefined ? savedState[p.name] : 1;
   
@@ -463,7 +525,7 @@ potions.forEach((p, i) => {
       ${p.ingredients.map(ing => `<li data-ing="${ing.name}">${ing.qty} &times; ${ing.name}</li>`).join('')}
     </ul>
     
-    <button class="toggle" data-idx="${i}" aria-expanded="false">Show brewing steps</button>
+    <button class="toggle" data-idx="${i}" aria-expanded="false">Show Alchemy Instructions</button>
     <ol class="steps" id="steps-${i}">
       ${p.steps.map(s => `<li>${s}</li>`).join('')}
     </ol>
@@ -471,12 +533,11 @@ potions.forEach((p, i) => {
   grid.appendChild(card);
 });
 
-// Event Listeners for Cards
 grid.querySelectorAll('.toggle').forEach(btn => {
   btn.addEventListener('click', () => {
     const steps = document.getElementById('steps-' + btn.dataset.idx);
     const open = steps.classList.toggle('open');
-    btn.textContent = open ? 'Hide brewing steps' : 'Show brewing steps';
+    btn.textContent = open ? 'Hide Alchemy Instructions' : 'Show Alchemy Instructions';
     btn.setAttribute('aria-expanded', open);
   });
 });
@@ -488,7 +549,7 @@ function updateQuantity(name, value) {
   
   const input = grid.querySelector(`input[data-name="${name}"]`);
   if (input) input.value = v;
-  
+
   localStorage.setItem('kcd2_potion_state', JSON.stringify(state));
   updateShoppingList();
 }
@@ -509,7 +570,6 @@ grid.addEventListener('click', e => {
   }
 });
 
-// Shopping List Logic
 function updateShoppingList(){
   const totals = {};
   
@@ -525,7 +585,7 @@ function updateShoppingList(){
   const names = Object.keys(totals).sort();
   
   if (names.length === 0){
-    shopContent.innerHTML = '<div class="shopping-empty">Set brew counts above zero to build your list.</div>';
+    shopContent.innerHTML = '<div class="shopping-empty">No potions selected yet!</div>';
     return;
   }
   
@@ -538,7 +598,6 @@ function updateShoppingList(){
 
   shopContent.innerHTML = html;
 
-  // Re-attach checklist click events
   shopContent.querySelectorAll('.shop-item').forEach(item => {
     item.addEventListener('click', () => {
       const name = item.dataset.item;
@@ -553,7 +612,6 @@ function updateShoppingList(){
   });
 }
 
-// Search & Filter
 document.getElementById('searchInput').addEventListener('input', e => {
   const query = e.target.value.toLowerCase().trim();
   document.querySelectorAll('.card').forEach(card => {
@@ -562,7 +620,6 @@ document.getElementById('searchInput').addEventListener('input', e => {
   });
 });
 
-// Global Quick Action Toolbar Buttons
 document.getElementById('resetBtn').addEventListener('click', () => {
   Object.keys(state).forEach(k => state[k] = 0);
   grid.querySelectorAll('.qtyInput').forEach(inp => inp.value = 0);
@@ -590,14 +647,13 @@ document.getElementById('copyBtn').addEventListener('click', () => {
   const lines = Object.keys(totals).sort().map(k => `${totals[k]}x ${k}`);
   if (lines.length === 0) return;
 
-  navigator.clipboard.writeText("KCD2 Alchemy Restock List:\n" + lines.join("\n")).then(() => {
+  navigator.clipboard.writeText("Henry's KCD2 Shopping List:\n" + lines.join("\n")).then(() => {
     const btn = document.getElementById('copyBtn');
     btn.textContent = "Copied!";
     setTimeout(() => btn.textContent = "Copy List", 1500);
   });
 });
 
-// Initial Render
 updateShoppingList();
 </script>
 </body>
