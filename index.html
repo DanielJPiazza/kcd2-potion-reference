@@ -312,7 +312,7 @@ const potions = [
   {
     name: "Fox Potion",
     base: "1 Oil",
-    effect: "Improves speech and reading for negotiating or studying alchemy tomes.",
+    effect: "Temporarily boosts Speech skill, improving dialogue outcomes and trade pricing.",
     ingredients: [
       {name:"Nettle", qty:1},
       {name:"St. John's wort", qty:1},
@@ -320,150 +320,163 @@ const potions = [
       {name:"Charcoal", qty:1}
     ],
     steps: [
-      "Grind the St. John's wort and the nettle.",
-      "Add both to cauldron and boil for 2 turns.",
-      "Grind charcoal and throw it in.",
-      "Add belladonna and boil for 1 turn.",
-      "Pour into bottle."
+      "Pour oil into the cauldron.",
+      "Grind the St. John's wort and nettle using the mortar and pestle.",
+      "Add the ground herbs to the cauldron and boil for 2 turns of the sandglass.",
+      "Grind the charcoal and add it to the cauldron.",
+      "Add the belladonna and boil for 1 turn of the sandglass.",
+      "Grab a phial and bottle the potion."
     ]
   },
   {
     name: "Aqua Vitalis",
     base: "1 Water",
-    effect: "Reduces damage taken so Henry doesn't get one-shot by a peasant with a club.",
+    effect: "Reduces incoming damage in combat for a limited duration.",
     ingredients: [
       {name:"Dandelion", qty:2},
       {name:"Marigold", qty:1}
     ],
     steps: [
-      "Add dandelion to cauldron and boil for 1 turn.",
-      "Grind marigold and add to cauldron.",
-      "Boil for 2 turns.",
-      "Finally, distil."
+      "Pour water into the cauldron.",
+      "Add the dandelions and boil for 1 turn of the sandglass.",
+      "Grind the marigold in the mortar.",
+      "Add the ground marigold to the cauldron and boil for 2 turns of the sandglass.",
+      "Distil the concoction into a phial."
     ]
   },
   {
     name: "Artemisia",
     base: "1 Spiritus",
-    effect: "Increases Strength so you can carry 600 lbs of stolen Cuman armor back to Miller Peshek.",
+    effect: "Increases Strength skill and combat capability for a short duration.",
     ingredients: [
       {name:"Wormwood", qty:2},
       {name:"Sage", qty:1}
     ],
     steps: [
-      "Add sage to cauldron and boil for 1 turn.",
-      "Grind wormwood and add to cauldron.",
-      "Boil for 2 turns.",
-      "Finally, distil."
+      "Pour spirits into the cauldron.",
+      "Add the sage to the cauldron and boil for 1 turn of the sandglass.",
+      "Grind the wormwood in the mortar.",
+      "Add the ground wormwood to the cauldron and boil for 2 turns of the sandglass.",
+      "Distil the concoction into a phial."
     ]
   },
   {
     name: "Marigold Decoction",
     base: "1 Water",
-    effect: "Liquid chug-healing. Instantly fixes hangover after a wild night out with Father Godwin.",
+    effect: "Restores Health steadily over time and cures minor ailments.",
     ingredients: [
       {name:"Nettle", qty:1},
       {name:"Marigold", qty:2}
     ],
     steps: [
-      "Add nettle to cauldron and boil for 2 turns.",
-      "Grind marigold and add to cauldron.",
-      "Pour directly down Henry's throat."
+      "Pour water into the cauldron.",
+      "Add the nettle and boil for 1 turn of the sandglass.",
+      "Allow the cauldron to cool down completely.",
+      "Grind the marigolds in the mortar and add them to the cauldron.",
+      "Grab a phial and bottle the potion directly."
     ]
   },
   {
     name: "Quickfinger",
     base: "1 Water",
-    effect: "Improves lockpicking so you can pick locks with ease.",
+    effect: "Temporarily increases Lockpicking skill, making locks easier to pick.",
     ingredients: [
       {name:"Eyebright", qty:2},
       {name:"Valerian", qty:2},
       {name:"Cobweb", qty:1}
     ],
     steps: [
-      "Add cobweb and eyebright to cauldron; boil for 3 turns.",
-      "Grind valerian and add to cauldron.",
-      "Boil for 1 turn, then pour."
+      "Pour water into the cauldron.",
+      "Add the cobweb and eyebright to the cauldron.",
+      "Boil for 3 turns of the sandglass.",
+      "Grind the valerian in the mortar.",
+      "Add the ground valerian to the cauldron and boil for 1 turn of the sandglass.",
+      "Grab a phial and bottle the potion."
     ]
   },
   {
     name: "Saviour Schnapps",
     base: "1 Wine",
-    effect: "Saves your game! Warning: Drink too many and Henry wakes up naked in a ditch near Talmberg.",
+    effect: "Saves current progress and grants a minor boost to morale.",
     ingredients: [
       {name:"Nettle", qty:1},
       {name:"Belladonna", qty:2}
     ],
     steps: [
-      "Add nettle to cauldron and boil for 2 turns.",
-      "Grind belladonna.",
-      "Add belladonna to cauldron and boil for 1 turn.",
-      "Pour into flask and save your life!"
+      "Pour wine into the cauldron.",
+      "Add the nettle to the cauldron and boil for 2 turns of the sandglass.",
+      "Grind the belladonna in the mortar.",
+      "Add the ground belladonna to the cauldron and boil for 1 turn of the sandglass.",
+      "Grab a phial and bottle the potion."
     ]
   },
   {
     name: "Buck's Blood",
     base: "1 Oil",
-    effect: "Infinite stamina mode for sprinting away when 4 heavily armored bandits jump you.",
+    effect: "Enhances Maximum Stamina and accelerates Stamina regeneration.",
     ingredients: [
       {name:"St. John's wort", qty:1},
       {name:"Dandelion", qty:1},
       {name:"Comfrey", qty:1}
     ],
     steps: [
-      "Grind St. John's wort and add to cauldron.",
-      "Add comfrey to cauldron and boil for 1 turn.",
-      "Add dandelion and pump bellows for 1 turn.",
-      "Pour into bottle."
+      "Pour oil into the cauldron.",
+      "Grind the St. John's wort in the mortar and add it to the cauldron.",
+      "Add the comfrey and boil for 1 turn of the sandglass.",
+      "Add the dandelion and boil for 1 turn using the bellows.",
+      "Grab a phial and bottle the potion."
     ]
   },
   {
     name: "Bane Poison",
     base: "1 Wine",
-    effect: "Lethal poison. Slip it into the bandit camp stew pot while nobody is looking.",
+    effect: "Potent poison that rapidly depletes health when applied to weapons or food.",
     ingredients: [
       {name:"Wormwood", qty:1},
       {name:"Belladonna", qty:2},
       {name:"Amanita muscaria", qty:1}
     ],
     steps: [
-      "Add wormwood to cauldron and boil for 2 turns.",
-      "Grind belladonna and add to cauldron.",
-      "Boil for 1 turn using bellows.",
-      "Add fly agaric mushroom.",
-      "Distil with extreme caution!"
+      "Pour wine into the cauldron.",
+      "Add the wormwood and boil for 2 turns of the sandglass.",
+      "Grind the belladonna and add to the cauldron.",
+      "Boil for 1 turn using the bellows.",
+      "Add the Amanita muscaria mushroom.",
+      "Distil the poison into a phial."
     ]
   },
   {
     name: "Painkiller",
     base: "1 Spiritus",
-    effect: "Numbs pain when Captain Bernard breaks your ribs during combat practice.",
+    effect: "Mitigates damage penalties and eases physical exhaustion.",
     ingredients: [
       {name:"Poppy", qty:3},
       {name:"Comfrey", qty:1},
       {name:"Marigold", qty:1}
     ],
     steps: [
-      "Grind poppy and add to cauldron.",
-      "Add marigold and pump bellows for 1 turn.",
-      "Add comfrey and boil for 2 turns.",
-      "Distil."
+      "Pour spirits into the cauldron.",
+      "Grind the poppy in the mortar and add to the cauldron.",
+      "Add the marigold and boil for 1 turn using the bellows.",
+      "Add the comfrey and boil for 2 turns of the sandglass.",
+      "Distil the concoction into a phial."
     ]
   },
   {
     name: "Hair o' the Dog",
     base: "1 Water",
-    effect: "Cures drunkenness when Capon challenges you to a bathhouse drinking contest.",
+    effect: "Cures drunkenness and prevents alcohol hangovers.",
     ingredients: [
       {name:"Sage", qty:1},
       {name:"St. John's wort", qty:1},
       {name:"Mint", qty:1}
     ],
     steps: [
-      "Add sage and St. John's wort to cauldron.",
-      "Boil for 3 turns.",
-      "Grind mint and throw it in.",
-      "Pour and drink immediately."
+      "Pour water into the cauldron.",
+      "Add the sage and St. John's wort to the cauldron.",
+      "Boil for 3 turns of the sandglass.",
+      "Grind the mint in the mortar and add to the cauldron.",
+      "Grab a phial and bottle the potion."
     ]
   }
 ];
