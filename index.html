@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Henry's Alchemy Restock</title>
+<title>Henry's Alchemy Restock - KCD2</title>
 <style>
-  /* Base Variables - Dark Mode */
   :root {
     --bg: #1A120B;
     --panel: #2C221E;
@@ -20,7 +19,6 @@
     --shadow: rgba(0, 0, 0, 0.8);
   }
 
-  /* Light Mode */
   [data-theme="light"] {
     --bg: #FDFBF7;
     --panel: #FFF;
@@ -44,7 +42,6 @@
 
   .wrap{ max-width:1350px; margin:0 auto; position: relative; }
 
-  /* Top Control Bar positioned absolutely on wide screens */
   .top-bar {
     position: absolute;
     top: 0;
@@ -93,7 +90,6 @@
     display: block;
   }
   
-  /* Fine-tuned facial alignments */
   .portrait-henry { object-position: 50% 15%; }
   .portrait-capon { object-position: 50% 10%; }
 
@@ -134,7 +130,6 @@
     transform: scale(1.05);
   }
 
-  /* Increased breakpoint to 1100px so button drops above the header early */
   @media (max-width: 1100px) {
     .top-bar {
       position: static;
@@ -193,7 +188,7 @@
 
   .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
     gap: 16px;
   }
   .card {
@@ -251,15 +246,29 @@
 
   .ing-list { margin: 0 0 12px 0; padding-left: 18px; font-size: 14px; min-height: 72px; }
   .ing-list li::marker { color: var(--accent2); }
-  .toggle {
+
+  .toggle-btn {
     background: none; border: 1px solid var(--border); color: var(--accent);
     border-radius: 4px; padding: 6px 10px; font-size: 12px; cursor: pointer;
-    align-self: flex-start; font-family: inherit; transition: all 0.2s; font-weight: bold; margin-bottom: 8px;
+    align-self: flex-start; font-family: inherit; transition: all 0.2s; font-weight: bold; margin-bottom: 6px;
+    width: 100%; text-align: left;
   }
-  .toggle:hover { background: var(--panel2); border-color: var(--border-bright); }
-  .steps { display: none; margin: 0 0 8px 0; padding-left: 18px; font-size: 13.5px; color: var(--text); }
-  .steps.open { display: block; }
+  .toggle-btn:hover { background: var(--panel2); border-color: var(--border-bright); }
+
+  .collapsible { display: none; margin: 0 0 10px 0; padding: 8px 12px; background: var(--panel2); border-radius: 4px; border: 1px solid var(--border); }
+  .collapsible.open { display: block; }
+  
+  .steps { padding-left: 18px; font-size: 13.5px; color: var(--text); margin: 0; }
   .steps li { margin-bottom: 4px; }
+
+  .levels-table { width: 100%; border-collapse: collapse; font-size: 12px; margin: 0; }
+  .levels-table th, .levels-table td { padding: 4px 6px; text-align: left; border-bottom: 1px solid var(--border); }
+  .levels-table th { color: var(--accent); font-variant: small-caps; border-bottom: 2px solid var(--border-bright); }
+  .levels-table tr:last-child td { border-bottom: none; }
+  .tier-weak { color: #A8A29E; }
+  .tier-normal { color: #F5F5F4; }
+  .tier-strong { color: #F59E0B; font-weight: bold; }
+  .tier-henry { color: #EF4444; font-weight: bold; }
 </style>
 </head>
 <body>
@@ -270,17 +279,15 @@
   </div>
 
   <div class="header-row">
-    <!-- Image Portrait: Henry -->
     <div class="character-portrait-wrapper" title="Henry's come to see us!">
       <img src="images/henry.jpg" alt="Henry" class="portrait-henry">
     </div>
 
     <div class="header-title-container">
-      <h1>Henry's Alchemy Restock</h1>
+      <h1>Henry's Alchemy Restock (KCD2)</h1>
       <span class="motto">⚔️ AUDENTES FORTUNA IUVAT ⚔️</span>
     </div>
 
-    <!-- Image Portrait: Hans Capon -->
     <div class="character-portrait-wrapper" title="Lord Hans Capon of Leipa">
       <img src="images/capon.jpg" alt="Capon" class="portrait-capon">
     </div>
@@ -312,7 +319,13 @@ const potions = [
   {
     name: "Fox Potion",
     base: "1 Oil",
-    effect: "Temporarily boosts Speech skill, improving dialogue outcomes and trade pricing.",
+    effect: "Boosts Speech skill, reading speed, and grants bonus experience gain.",
+    levels: [
+      { quality: "Weak", stat: "+2 Speech, +10% EXP Gain for 12 hours" },
+      { quality: "Normal", stat: "+3 Speech, +25% EXP Gain, faster reading for 24 hours" },
+      { quality: "Strong", stat: "+5 Speech, +35% EXP Gain, faster reading for 24 hours" },
+      { quality: "Henry", stat: "+6 Speech, +50% EXP Gain, reading speed doubled for 48 hours" }
+    ],
     ingredients: [
       {name:"Nettle", qty:1},
       {name:"St. John's wort", qty:1},
@@ -331,7 +344,13 @@ const potions = [
   {
     name: "Aqua Vitalis",
     base: "1 Water",
-    effect: "Reduces incoming damage in combat for a limited duration.",
+    effect: "Reduces incoming damage in combat and slows bleeding rates.",
+    levels: [
+      { quality: "Weak", stat: "-15% Health loss for 5 minutes" },
+      { quality: "Normal", stat: "-15% Health loss, -10% bleeding speed for 10 minutes" },
+      { quality: "Strong", stat: "-50% Health loss, -50% bleeding speed for 10 minutes" },
+      { quality: "Henry", stat: "-60% Health loss, -60% bleeding speed for 15 minutes" }
+    ],
     ingredients: [
       {name:"Dandelion", qty:2},
       {name:"Marigold", qty:1}
@@ -347,7 +366,13 @@ const potions = [
   {
     name: "Artemisia",
     base: "1 Spiritus",
-    effect: "Increases Strength skill and combat capability for a short duration.",
+    effect: "Increases Strength skill and lowers stamina cost of attacks and blocks.",
+    levels: [
+      { quality: "Weak", stat: "+2 Strength for 10 minutes" },
+      { quality: "Normal", stat: "+4 Strength for 10 minutes" },
+      { quality: "Strong", stat: "+4 Strength, -25% Attack & Defense Stamina cost for 10 minutes" },
+      { quality: "Henry", stat: "+6 Strength, -35% Attack & Defense Stamina cost for 15 minutes" }
+    ],
     ingredients: [
       {name:"Wormwood", qty:2},
       {name:"Sage", qty:1}
@@ -363,7 +388,13 @@ const potions = [
   {
     name: "Marigold Decoction",
     base: "1 Water",
-    effect: "Restores Health steadily over time and cures minor ailments.",
+    effect: "Restores Health steadily over time and cures hangovers.",
+    levels: [
+      { quality: "Weak", stat: "Restores +30 Health over 20s, cures Hangover" },
+      { quality: "Normal", stat: "Restores +60 Health over 20s, cures Hangover" },
+      { quality: "Strong", stat: "Restores +90 Health over 20s, cures Hangover" },
+      { quality: "Henry", stat: "Restores +120 Health over 20s, cures Hangover & Alcoholism" }
+    ],
     ingredients: [
       {name:"Nettle", qty:1},
       {name:"Marigold", qty:2}
@@ -377,9 +408,37 @@ const potions = [
     ]
   },
   {
+    name: "Lazarus Potion",
+    base: "1 Water",
+    effect: "Restores massive Health over a extended duration and cures Poison.",
+    levels: [
+      { quality: "Weak", stat: "Restores +50 Health over 5 min, cures Poison" },
+      { quality: "Normal", stat: "Restores +100 Health over 5 min, cures Poison" },
+      { quality: "Strong", stat: "Restores +150 Health over 5 min, cures Poison" },
+      { quality: "Henry", stat: "Restores +200 Health over 5 min, cures Poison & restores full Energy" }
+    ],
+    ingredients: [
+      {name:"Valerian", qty:1},
+      {name:"Comfrey", qty:2}
+    ],
+    steps: [
+      "Pour water into the cauldron.",
+      "Add the valerian to the cauldron and boil for 1 turn of the sandglass.",
+      "Grind the comfrey in the mortar and add to the cauldron.",
+      "Boil for 1 turn of the sandglass.",
+      "Distil the concoction into a phial."
+    ]
+  },
+  {
     name: "Quickfinger",
     base: "1 Water",
-    effect: "Temporarily increases Lockpicking skill, making locks easier to pick.",
+    effect: "Temporarily increases Lockpicking and Craftsmanship skills.",
+    levels: [
+      { quality: "Weak", stat: "+2 Lockpicking & Craftsmanship for 5 minutes" },
+      { quality: "Normal", stat: "+3 Lockpicking & Craftsmanship for 10 minutes" },
+      { quality: "Strong", stat: "+5 Lockpicking & Craftsmanship for 10 minutes" },
+      { quality: "Henry", stat: "+6 Lockpicking & Craftsmanship for 15 minutes" }
+    ],
     ingredients: [
       {name:"Eyebright", qty:2},
       {name:"Valerian", qty:2},
@@ -397,7 +456,13 @@ const potions = [
   {
     name: "Saviour Schnapps",
     base: "1 Wine",
-    effect: "Saves current progress and grants a minor boost to morale.",
+    effect: "Saves current progress and grants temporary primary attribute bonuses.",
+    levels: [
+      { quality: "Weak", stat: "Saves Game; +1 Strength, Agility, Vitality for 3 min" },
+      { quality: "Normal", stat: "Saves Game; +2 Strength, Agility, Vitality for 5 min" },
+      { quality: "Strong", stat: "Saves Game; +3 Strength, Agility, Vitality for 5 min" },
+      { quality: "Henry", stat: "Saves Game; +3 Strength, Agility, Vitality for 8 min, +20 Health instantly" }
+    ],
     ingredients: [
       {name:"Nettle", qty:1},
       {name:"Belladonna", qty:2}
@@ -411,9 +476,38 @@ const potions = [
     ]
   },
   {
+    name: "Bivoj's Rage Potion",
+    base: "1 Spiritus",
+    effect: "Boosts Warfare and Melee Damage output significantly in combat.",
+    levels: [
+      { quality: "Weak", stat: "+2 Warfare, +10% Melee Damage for 5 minutes" },
+      { quality: "Normal", stat: "+3 Warfare, +15% Melee Damage for 10 minutes" },
+      { quality: "Strong", stat: "+5 Warfare, +25% Melee Damage for 10 minutes" },
+      { quality: "Henry", stat: "+6 Warfare, +35% Melee Damage for 15 minutes" }
+    ],
+    ingredients: [
+      {name:"Sage", qty:2},
+      {name:"Cave Mushroom", qty:1},
+      {name:"Wormwood", qty:1}
+    ],
+    steps: [
+      "Pour spirits into the cauldron.",
+      "Add the sage to the cauldron and boil for 2 turns of the sandglass.",
+      "Grind the cave mushroom and wormwood together.",
+      "Add the ground mixture to the cauldron and boil for 1 turn using the bellows.",
+      "Grab a phial and bottle the potion."
+    ]
+  },
+  {
     name: "Buck's Blood",
     base: "1 Oil",
-    effect: "Enhances Maximum Stamina and accelerates Stamina regeneration.",
+    effect: "Enhances Maximum Stamina capacity and accelerates Stamina regeneration.",
+    levels: [
+      { quality: "Weak", stat: "+15% Max Stamina for 20 minutes" },
+      { quality: "Normal", stat: "+20% Max Stamina, +10% Stamina Regen for 30 minutes" },
+      { quality: "Strong", stat: "+30% Max Stamina, +15% Stamina Regen for 40 minutes" },
+      { quality: "Henry", stat: "+40% Max Stamina, +25% Stamina Regen for 60 minutes" }
+    ],
     ingredients: [
       {name:"St. John's wort", qty:1},
       {name:"Dandelion", qty:1},
@@ -428,9 +522,130 @@ const potions = [
     ]
   },
   {
+    name: "Nighthawk Potion",
+    base: "1 Water",
+    effect: "Enhances vision in pitch darkness.",
+    levels: [
+      { quality: "Weak", stat: "Minor low-light vision for 5 minutes" },
+      { quality: "Normal", stat: "Clear low-light vision for 10 minutes" },
+      { quality: "Strong", stat: "Bright night vision for 15 minutes" },
+      { quality: "Henry", stat: "Perfect night vision for 20 minutes, immune to flash glare" }
+    ],
+    ingredients: [
+      {name:"Eyebright", qty:2},
+      {name:"Cave Mushroom", qty:1},
+      {name:"Belladonna", qty:1}
+    ],
+    steps: [
+      "Pour water into the cauldron.",
+      "Add the eyebright to the cauldron and boil for 3 turns of the sandglass.",
+      "Grind the cave mushroom and belladonna together.",
+      "Add ground mixture to cauldron and boil for 1 turn.",
+      "Distil the concoction into a phial."
+    ]
+  },
+  {
+    name: "Padfoot Potion",
+    base: "1 Water",
+    effect: "Boosts Stealth and Lockpicking skills.",
+    levels: [
+      { quality: "Weak", stat: "+2 Stealth & Lockpicking for 5 minutes" },
+      { quality: "Normal", stat: "+3 Stealth & Lockpicking for 10 minutes" },
+      { quality: "Strong", stat: "+5 Stealth & Lockpicking for 10 minutes" },
+      { quality: "Henry", stat: "+6 Stealth & Lockpicking for 15 minutes" }
+    ],
+    ingredients: [
+      {name:"Valerian", qty:1},
+      {name:"Chamomile", qty:1},
+      {name:"Cobweb", qty:1}
+    ],
+    steps: [
+      "Pour water into the cauldron.",
+      "Add the cobweb and chamomile to the cauldron.",
+      "Boil for 2 turns of the sandglass.",
+      "Grind the valerian and add to cauldron.",
+      "Boil for 1 turn of the sandglass.",
+      "Grab a phial and bottle the potion."
+    ]
+  },
+  {
+    name: "Bard's Potion",
+    base: "1 Oil",
+    effect: "Temporarily boosts Speech skill and charisma.",
+    levels: [
+      { quality: "Weak", stat: "+2 Speech for 10 minutes" },
+      { quality: "Normal", stat: "+3 Speech for 15 minutes" },
+      { quality: "Strong", stat: "+5 Speech for 20 minutes" },
+      { quality: "Henry", stat: "+6 Speech, +2 Charisma for 30 minutes" }
+    ],
+    ingredients: [
+      {name:"Belladonna", qty:1},
+      {name:"St. John's wort", qty:1},
+      {name:"Nettle", qty:1},
+      {name:"Charcoal", qty:1}
+    ],
+    steps: [
+      "Pour oil into the cauldron.",
+      "Grind the St. John's wort and nettle, then add to cauldron.",
+      "Boil for 2 turns of the sandglass.",
+      "Grind charcoal and add to cauldron.",
+      "Add belladonna and boil for 1 turn.",
+      "Grab a phial and bottle the potion."
+    ]
+  },
+  {
+    name: "Bowman's Brew",
+    base: "1 Spiritus",
+    effect: "Increases Marksmanship skill and slows Stamina loss while aiming.",
+    levels: [
+      { quality: "Weak", stat: "+3 Marksmanship for 10 minutes" },
+      { quality: "Normal", stat: "+3 Marksmanship, -20% Aim Stamina Loss for 10 minutes" },
+      { quality: "Strong", stat: "+5 Marksmanship, -50% Aim Stamina Loss for 10 minutes" },
+      { quality: "Henry", stat: "+6 Marksmanship, -65% Aim Stamina Loss, eliminated bow sway for 15 minutes" }
+    ],
+    ingredients: [
+      {name:"Eyebright", qty:2},
+      {name:"St. John's wort", qty:1}
+    ],
+    steps: [
+      "Pour spirits into the cauldron.",
+      "Grind eyebright and add to the cauldron.",
+      "Add St. John's wort and boil for 2 turns of the sandglass.",
+      "Distil the concoction into a phial."
+    ]
+  },
+  {
+    name: "Emetic Potion",
+    base: "1 Water",
+    effect: "Causes severe vomiting, depletion of nourishment and stamina.",
+    levels: [
+      { quality: "Weak", stat: "-30 Nourishment over 60s" },
+      { quality: "Normal", stat: "-50 Nourishment over 45s, disables sprint" },
+      { quality: "Strong", stat: "-80 Nourishment over 30s, disables sprint & reduces stats by -2" },
+      { quality: "Henry", stat: "Instantly sets Nourishment to 0, forces continuous vomiting for 2 min" }
+    ],
+    ingredients: [
+      {name:"Dandelion", qty:1},
+      {name:"Chamomile", qty:2}
+    ],
+    steps: [
+      "Pour water into the cauldron.",
+      "Add dandelions and boil for 1 turn.",
+      "Grind chamomile in the mortar.",
+      "Add ground chamomile and boil for 2 turns using the bellows.",
+      "Grab a phial and bottle the potion."
+    ]
+  },
+  {
     name: "Bane Poison",
     base: "1 Wine",
     effect: "Potent poison that rapidly depletes health when applied to weapons or food.",
+    levels: [
+      { quality: "Weak", stat: "-70 Health over 60s, reduces movement speed" },
+      { quality: "Normal", stat: "-110 Health over 45s, disables running" },
+      { quality: "Strong", stat: "-110 Health over 30s, disables running" },
+      { quality: "Henry", stat: "-150 Health over 20s, disables running & causes fatal collapse" }
+    ],
     ingredients: [
       {name:"Wormwood", qty:1},
       {name:"Belladonna", qty:2},
@@ -440,15 +655,21 @@ const potions = [
       "Pour wine into the cauldron.",
       "Add the wormwood and boil for 2 turns of the sandglass.",
       "Grind the belladonna and add to the cauldron.",
-      "Boil for 1 turn using the bellows.",
+      "Boil for 1 turn using bellows.",
       "Add the Amanita muscaria mushroom.",
       "Distil the poison into a phial."
     ]
   },
   {
-    name: "Painkiller",
+    name: "Painkiller Brew",
     base: "1 Spiritus",
-    effect: "Mitigates damage penalties and eases physical exhaustion.",
+    effect: "Suppresses injury penalties, head trauma, and bleeding effects.",
+    levels: [
+      { quality: "Weak", stat: "Reduces injury debuffs by 25% for 5 minutes" },
+      { quality: "Normal", stat: "Reduces injury debuffs by 50% for 10 minutes" },
+      { quality: "Strong", stat: "Ignores bodily injury debuffs & maintains max stamina above health for 10 minutes" },
+      { quality: "Henry", stat: "Completely immune to injury debuffs & bleeding penalties for 15 minutes" }
+    ],
     ingredients: [
       {name:"Poppy", qty:3},
       {name:"Comfrey", qty:1},
@@ -465,7 +686,13 @@ const potions = [
   {
     name: "Hair o' the Dog",
     base: "1 Water",
-    effect: "Cures drunkenness and prevents alcohol hangovers.",
+    effect: "Cures drunkenness, prevents alcohol hangovers, and mitigates addiction.",
+    levels: [
+      { quality: "Weak", stat: "-25% Drunkenness, cures mild hangover" },
+      { quality: "Normal", stat: "-50% Drunkenness, cures standard hangover" },
+      { quality: "Strong", stat: "-100% Drunkenness, completely cures hangover" },
+      { quality: "Henry", stat: "-100% Drunkenness, cures hangover & grants alcoholism immunity for 12 hours" }
+    ],
     ingredients: [
       {name:"Sage", qty:1},
       {name:"St. John's wort", qty:1},
@@ -538,20 +765,46 @@ potions.forEach((p, i) => {
       ${p.ingredients.map(ing => `<li data-ing="${ing.name}">${ing.qty} &times; ${ing.name}</li>`).join('')}
     </ul>
     
-    <button class="toggle" data-idx="${i}" aria-expanded="false">Show Alchemy Instructions</button>
-    <ol class="steps" id="steps-${i}">
-      ${p.steps.map(s => `<li>${s}</li>`).join('')}
-    </ol>
+    <button class="toggle-btn" data-target="levels-${i}" aria-expanded="false">Show Stat Buffs by Quality Tier</button>
+    <div class="collapsible" id="levels-${i}">
+      <table class="levels-table">
+        <thead>
+          <tr>
+            <th>Quality</th>
+            <th>Effect / Stat Increase</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${p.levels.map(lvl => `
+            <tr>
+              <td class="tier-${lvl.quality.toLowerCase()}">${lvl.quality}</td>
+              <td>${lvl.stat}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+
+    <button class="toggle-btn" data-target="steps-${i}" aria-expanded="false">Show Alchemy Instructions</button>
+    <div class="collapsible" id="steps-${i}">
+      <ol class="steps">
+        ${p.steps.map(s => `<li>${s}</li>`).join('')}
+      </ol>
+    </div>
   `;
   grid.appendChild(card);
 });
 
-grid.querySelectorAll('.toggle').forEach(btn => {
+grid.querySelectorAll('.toggle-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    const steps = document.getElementById('steps-' + btn.dataset.idx);
-    const open = steps.classList.toggle('open');
-    btn.textContent = open ? 'Hide Alchemy Instructions' : 'Show Alchemy Instructions';
+    const target = document.getElementById(btn.dataset.target);
+    const open = target.classList.toggle('open');
     btn.setAttribute('aria-expanded', open);
+    if (btn.dataset.target.startsWith('levels-')) {
+      btn.textContent = open ? 'Hide Stat Buffs by Quality Tier' : 'Show Stat Buffs by Quality Tier';
+    } else {
+      btn.textContent = open ? 'Hide Alchemy Instructions' : 'Show Alchemy Instructions';
+    }
   });
 });
 
